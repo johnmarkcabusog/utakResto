@@ -7,18 +7,21 @@ import { defaultVariation } from "../../constants";
 import { FieldArray } from "formik";
 import { get, cloneDeep } from "lodash";
 
-const VariationOptions = ({ values, handleChange, handleBlur, errors, touched, setFieldValue}) => {
+const VariationOptions = ({ values, handleChange, handleBlur, errors, setFieldValue}) => {
   const { variations } = values;
   const errorsVariation = get(errors, "variations", []);
-  const touchedVariation = get(touched, "variations", [])
+
   const helpText = (index, field_name) => {
-    if (touchedVariation.length > 0 && errorsVariation.length > 0) {
-      return errors.variations[index][field_name];
+    if(errorsVariation.length > 0 ){ // form erros exist
+      if(!errorsVariation[index]) return "";
+      return errorsVariation[index][field_name]
     }
     return "";
   };
+
   const hasError = (index, field_name) => {
-    if (touchedVariation.length > 0 && errorsVariation.length > 0) {
+    if(errorsVariation.length > 0 ){ // form erros exist
+      if(!errorsVariation[index]) return "";
       return Boolean(errors.variations[index][field_name]);
     }
     return false;
@@ -27,7 +30,12 @@ const VariationOptions = ({ values, handleChange, handleBlur, errors, touched, s
   const handleAddVariation = () =>{
     const clonedVariations = cloneDeep(variations);
     clonedVariations.push(defaultVariation)
-    console.log("handle",clonedVariations)
+    setFieldValue("variations", clonedVariations, true)
+  }
+
+  const removeVariation = ()=>{
+    const clonedVariations = cloneDeep(variations);
+    clonedVariations.pop()
     setFieldValue("variations", clonedVariations, true)
   }
 
@@ -98,13 +106,13 @@ const VariationOptions = ({ values, handleChange, handleBlur, errors, touched, s
                 />
               </Grid>
               <Grid item xs={2} className="add-icons">
-                {errorsVariation.length === 0 && (
+                {(!errorsVariation[index] && index === variations.length -1) && (
                   <>
-                    <IconButton color="success" size="small"  onClick={handleAddVariation}  component="span">
+                    <IconButton color="success" onClick={handleAddVariation}  component="span">
                       <AddIcon />
                     </IconButton>
                     {variations.length > 1 && (
-                      <IconButton color="error" size="small" component="span">
+                      <IconButton color="error" onClick={removeVariation} component="span">
                         <RemoveIcon />
                       </IconButton>
                     )}

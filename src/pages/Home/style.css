@@ -1,6 +1,7 @@
 .parent-container{
     display: flex;
     flex-direction: column;
+    gap:10px;
 }
 .header-section{
     background-color: whitesmoke;
@@ -27,20 +28,41 @@
     color:white;
     padding:10px;
     text-align: center;
+    font-size: 20px;
 }
 .form-body{
-    padding: 10px;
+    padding:20px;
     display: flex;
     flex-direction: column;
     gap:10px;
+    height: 100%;
 }
 .submit-section{
     display: flex;
     justify-content: flex-end;
     gap:10px;
+    padding-top: 100px;
+    
 }
 .add-icons{
     display: flex;
     padding-top: 20px;
     align-items: center;
+}
+/* .menu-table{
+    padding-top:20px;
+} */
+
+.menuform-drawer{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap:50px;
+
+}
+
+.filters{
+    display: flex;
+    gap:10px;
+    padding-bottom: 10px;
 }
