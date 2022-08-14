@@ -1,0 +1,46 @@
+.parent-container{
+    display: flex;
+    flex-direction: column;
+}
+.header-section{
+    background-color: whitesmoke;
+    display:  flex;
+    gap: 50px;
+    /* padding: 40px; */
+    justify-content: center;
+    align-items: center;
+}
+.company-name{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #62bbc2;
+}
+.utak-logo{
+    width:100px;
+    height: auto;
+}
+.add-form{
+    background-color: greenyellow;
+}
+.form-header{
+    background-color: #62bbc2;
+    color:white;
+    padding:10px;
+    text-align: center;
+}
+.form-body{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+.submit-section{
+    display: flex;
+    justify-content: flex-end;
+    gap:10px;
+}
+.add-icons{
+    display: flex;
+    padding-top: 20px;
+    align-items: center;
+}
