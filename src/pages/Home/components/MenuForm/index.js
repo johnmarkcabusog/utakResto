@@ -6,13 +6,12 @@ import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import VariationOptions from "./VariationOptions";
-import { categories } from "../../constants";
 import { isEmpty  } from "lodash";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from "@mui/material/IconButton";
 
 const MenuForm = (props) => {
-  const { values, errors, handleChange, touched, handleBlur, handleReset, setFieldValue, dirty, handleCloseDrawer} = props;
+  const { values, errors, handleChange, touched, handleBlur, handleReset, setFieldValue, dirty, handleCloseDrawer, handleSubmit, categories} = props;
   
   const helpText = (field_name) => {
     return touched[field_name] ? errors[field_name] : "";
@@ -27,7 +26,9 @@ const MenuForm = (props) => {
             <IconButton style={{color: "white", float:"left"}}size="small" onClick={handleCloseDrawer} component="span">
               <ArrowBackIcon />
             </IconButton>
-                    ADD MENU ITEM</div>
+            ADD MENU ITEM
+            </div>
+            
             <div className="form-body">
               {" "}
               <TextField
@@ -122,9 +123,10 @@ const MenuForm = (props) => {
                 </>
               )}
        
+
               <div className="submit-section">
                 <Button variant="outlined" disabled={!dirty} onClick={handleReset}>Reset</Button>{" "}
-                <Button variant="contained" disabled={!dirty || !isEmpty(errors)}>Submit</Button>
+                <Button variant="contained" disabled={!dirty || !isEmpty(errors)} onClick={handleSubmit}>Submit</Button>
               </div>
             </div>
     </Fragment>

@@ -4,9 +4,9 @@ export const defaultVariation = {
   variation_cost:0,
   variation_stock:0,
 }
+
 export const formInitialValues = {
-    id:0,
-    menu_category: "dessert",
+    menu_category: 1,
     menu_name:"",
     has_variation:false,
     variations:[
@@ -16,23 +16,3 @@ export const formInitialValues = {
     cost:0,
     stock:0
 }
-
-
-export const categories = [
-    {
-      value: "",
-      label: "Add Category...",
-    },
-    {
-      value: "dessert",
-      label: "Dessert",
-    },
-    {
-      value: "snacks",
-      label: "Snacks",
-    },
-    {
-      value: "drinks",
-      label: "Drinks",
-    },
-  ];
