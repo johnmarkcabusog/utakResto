@@ -1,10 +1,13 @@
 import React, { Fragment, useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { openCategoryModal, openDeleteModal } from "../../../../../redux/actions/productActions";
-import { useDispatch } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import {
+  openCategoryModal,
+  openDeleteModal,
+} from "../../../../../redux/actions/productActions";
 import { CATEGORY_LIMIT } from "../../../constants";
 
 const Filters = ({
@@ -18,12 +21,15 @@ const Filters = ({
     hovered: false,
     category_value: "",
   });
+
   const handleMouseEnter = (c) => {
     setButtonHoverd({ hovered: true, category_value: c.value });
   };
+
   const handleMouseLeave = () => {
     setButtonHoverd({ hovered: false, category_value: "" });
   };
+  
   return (
     <div className="filters">
       <Button
@@ -35,7 +41,9 @@ const Filters = ({
       </Button>
       {categories.map((c) => {
         // do not allow deletion when category is being used by a menu item
-        const categoryIsBeingUsed = menuItems.find(m=> m.menu_category === c.value);
+        const categoryIsBeingUsed = menuItems.find(
+          (m) => m.menu_category === c.value
+        );
         return (
           <Fragment key={c.label}>
             {c.value !== "" && (
@@ -51,7 +59,8 @@ const Filters = ({
                   {c.label}
                 </Button>
                 {buttonHovered.hovered &&
-                  buttonHovered.category_value === c.value && !categoryIsBeingUsed && (
+                  buttonHovered.category_value === c.value &&
+                  !categoryIsBeingUsed && (
                     <IconButton
                       color="error"
                       className="category-button-remove"
@@ -59,7 +68,14 @@ const Filters = ({
                       onMouseEnter={() => handleMouseEnter(c)}
                       onMouseLeave={handleMouseLeave}
                       onClick={() => {
-                        dispatch(openDeleteModal({open:true, toDelete:"category", id: c.value, entity:c.label}))
+                        dispatch(
+                          openDeleteModal({
+                            open: true,
+                            toDelete: "category",
+                            id: c.value,
+                            entity: c.label,
+                          })
+                        );
                       }}
                     >
                       <RemoveCircleIcon />
@@ -72,17 +88,16 @@ const Filters = ({
       })}
       {categories.length <= CATEGORY_LIMIT && (
         <IconButton
-        aria-label="expand row"
-        size="small"
-        style={{ marginTop: 15 }}
-        onClick={() => {
-          dispatch(openCategoryModal({ open: true }));
-        }}
-      >
-        <AddCircleIcon />
-      </IconButton>
+          aria-label="expand row"
+          size="small"
+          style={{ marginTop: 15 }}
+          onClick={() => {
+            dispatch(openCategoryModal({ open: true }));
+          }}
+        >
+          <AddCircleIcon />
+        </IconButton>
       )}
-      
     </div>
   );
 };

@@ -14,10 +14,10 @@ export const getVariations = async (menu, db) => {
     const variations = get(menu, "variations", []);
     if (variations.length > 0) {
       const dbRef = ref(db);
-      for(let vary of variations){
-        const data =  await getFirebase(child(dbRef, "variations/" + vary));
-        if(data.exists()){
-          variationList.push({ id: vary, ...data.val() })
+      for (let vary of variations) {
+        const data = await getFirebase(child(dbRef, "variations/" + vary));
+        if (data.exists()) {
+          variationList.push({ id: vary, ...data.val() });
         }
       }
     }
@@ -60,6 +60,7 @@ export const menuData = (values) => {
 export const addNewItem = async ({ values, db }) => {
   const { has_variation, variations } = values;
   const menuCollectionRef = ref(db, "menu");
+
   try {
     if (!has_variation) {
       const newMenuItem = push(menuCollectionRef);

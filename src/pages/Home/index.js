@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
+import { useSelector } from "react-redux";
 import "./style.css";
 import UtakLogo from "../../assets/utak-logo.svg";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { Container } from "@mui/system";
-import { useSelector } from "react-redux";
 import StartFirebase from "../../firebaseConfig";
-import { ref, onValue, off} from "firebase/database"
 import CollapsibleTable from "./components/CollapseMenuTable";
 import DrawerForm from "./components/DrawerForm";
 import CategoryModal from "./components/CategoryModal";
 import DeleteModal from "./components/DeleteModal";
 import InfoAlert from "./components/InfoAlert";
 import AddItemButton from "./components/AddItemButton";
+import { ref, onValue, off} from "firebase/database"
 
 const Home = () => {
   const [db, setDb] = useState('');
@@ -24,7 +24,6 @@ const Home = () => {
   useEffect(()=>{ // no dependency to run only once
     const db = StartFirebase()
     setDb(db);
-    
   },[])
   
 

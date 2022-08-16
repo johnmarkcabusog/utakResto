@@ -54,6 +54,7 @@ const CollapsibleTable = ({ db, categories }) => {
   }, [db]);
 
   const filteredItems = filterCategory === "All" ? menuItems : menuItems.filter((x) => x.menu_category === filterCategory);
+  
   return (
     <>
       <Filters

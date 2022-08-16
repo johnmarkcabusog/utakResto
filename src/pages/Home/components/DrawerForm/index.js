@@ -3,7 +3,7 @@ import MenuForm from "../MenuForm";
 import { Formik } from "formik";
 import { defaultVariation, formInitialValues } from "../../constants";
 import validationSchema from "../../validationSchema";
-import { Drawer } from "@mui/material";
+import Drawer from "@mui/material/Drawer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { openAddMenuDrawer, openInfoAlert } from "../../../../redux/actions/productActions";
