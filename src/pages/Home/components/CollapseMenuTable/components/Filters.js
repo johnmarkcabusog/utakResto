@@ -1,7 +1,12 @@
 import React, { Fragment } from "react";
 import Button from "@mui/material/Button";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { openCategoryModal } from "../../../../../redux/actions/productActions";
+import { useDispatch } from "react-redux";
+import IconButton from "@mui/material/IconButton";
+const Filters = ({ db, categories, filterCategory, setFilterCategory }) => {
+  const dispatch = useDispatch();
 
-const Filters = ({ categories, filterCategory, setFilterCategory }) => {
   return (
     <div className="filters">
       <Button
@@ -11,7 +16,7 @@ const Filters = ({ categories, filterCategory, setFilterCategory }) => {
         All
       </Button>
       {categories.map((c) => (
-        <Fragment key={c.id}>
+        <Fragment key={c.label}>
           {c.value !== "" && (
             <Button
               variant={`${
@@ -24,6 +29,10 @@ const Filters = ({ categories, filterCategory, setFilterCategory }) => {
           )}
         </Fragment>
       ))}
+         <IconButton aria-label="expand row" size="small" onClick={()=>{dispatch(openCategoryModal({open:true}))}}>
+         <AddCircleIcon />
+         {/* {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} */}
+       </IconButton>
     </div>
   );
 };

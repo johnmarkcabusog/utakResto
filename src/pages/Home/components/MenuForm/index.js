@@ -11,8 +11,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from "@mui/material/IconButton";
 
 const MenuForm = (props) => {
-  const { values, errors, handleChange, touched, handleBlur, handleReset, setFieldValue, dirty, handleCloseDrawer, handleSubmit, categories} = props;
-  
+  const { values, errors, handleChange, touched, handleBlur, handleReset, setFieldValue, dirty, handleCloseDrawer, handleSubmit, categories, drawerAction} = props;
+
   const helpText = (field_name) => {
     return touched[field_name] ? errors[field_name] : "";
   };
@@ -20,13 +20,17 @@ const MenuForm = (props) => {
     return touched[field_name] && Boolean(errors[field_name]);
   };
 
+  if(isEmpty(values)){
+    return null;
+  }
+
   return (
     <Fragment>
             <div className="form-header">
             <IconButton style={{color: "white", float:"left"}}size="small" onClick={handleCloseDrawer} component="span">
               <ArrowBackIcon />
             </IconButton>
-            ADD MENU ITEM
+            {drawerAction === 'add' ? 'ADD':"SAVE"} MENU ITEM
             </div>
             
             <div className="form-body">
@@ -71,9 +75,9 @@ const MenuForm = (props) => {
                   onChange={handleChange("has_variation")}
                 />
               </FormGroup>
-              {values.has_variation ? (
+              {(values.has_variation) ? (
                 <VariationOptions
-                  values={values}
+                  variations={values.variations}
                   handleChange={handleChange}
                   setFieldValue={setFieldValue}
                   handleBlur={handleBlur}
@@ -126,7 +130,7 @@ const MenuForm = (props) => {
 
               <div className="submit-section">
                 <Button variant="outlined" disabled={!dirty} onClick={handleReset}>Reset</Button>{" "}
-                <Button variant="contained" disabled={!dirty || !isEmpty(errors)} onClick={handleSubmit}>Submit</Button>
+                <Button variant="contained" disabled={!dirty || !isEmpty(errors)} onClick={handleSubmit}>{drawerAction==="add"? 'Submit':'Update'}</Button>
               </div>
             </div>
     </Fragment>

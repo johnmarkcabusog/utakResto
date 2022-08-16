@@ -6,3 +6,10 @@ export const openAddMenuDrawer = (payload)=>{
         payload: payload,
     }
 }
+
+export const openCategoryModal = (payload)=>{
+    return {
+        type: ActionTypes.OPEN_CATEGORY_MODAL,
+        payload: payload,
+    }
+}

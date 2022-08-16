@@ -1,4 +1,5 @@
 export const defaultVariation = {
+  id:0,
   variation_name:"",
   variation_price:0,
   variation_cost:0,

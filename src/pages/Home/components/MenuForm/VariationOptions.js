@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment} from "react";
 import { Grid, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
@@ -7,37 +7,44 @@ import { defaultVariation } from "../../constants";
 import { FieldArray } from "formik";
 import { get, cloneDeep } from "lodash";
 
-const VariationOptions = ({ values, handleChange, handleBlur, errors, setFieldValue}) => {
-  const { variations } = values;
-  const errorsVariation = get(errors, "variations", []);
+const VariationOptions = ({ // needs a state
+  variations,
+  handleChange,
+  handleBlur,
+  errors,
+  setFieldValue,
+}) => {
 
+  const errorsVariation = get(errors, "variations", []);
   const helpText = (index, field_name) => {
-    if(errorsVariation.length > 0 ){ // form erros exist
-      if(!errorsVariation[index]) return "";
-      return errorsVariation[index][field_name]
+    if (errorsVariation.length > 0) {
+      // form erros exist
+      if (!errorsVariation[index]) return "";
+      return errorsVariation[index][field_name];
     }
     return "";
   };
 
   const hasError = (index, field_name) => {
-    if(errorsVariation.length > 0 ){ // form erros exist
-      if(!errorsVariation[index]) return "";
+    if (errorsVariation.length > 0) {
+      // form erros exist
+      if (!errorsVariation[index]) return "";
       return Boolean(errors.variations[index][field_name]);
     }
     return false;
   };
 
-  const handleAddVariation = () =>{
+  const handleAddVariation = () => {
     const clonedVariations = cloneDeep(variations);
-    clonedVariations.push(defaultVariation)
-    setFieldValue("variations", clonedVariations, true)
-  }
+    clonedVariations.push(defaultVariation);
+    setFieldValue("variations", clonedVariations, true);
+  };
 
-  const removeVariation = ()=>{
+  const removeVariation = () => {
     const clonedVariations = cloneDeep(variations);
-    clonedVariations.pop()
-    setFieldValue("variations", clonedVariations, true)
-  }
+    clonedVariations.pop();
+    setFieldValue("variations", clonedVariations, true);
+  };
 
   return (
     <FieldArray name="variations">
@@ -106,17 +113,25 @@ const VariationOptions = ({ values, handleChange, handleBlur, errors, setFieldVa
                 />
               </Grid>
               <Grid item xs={2} className="add-icons">
-                {(!errorsVariation[index] && index === variations.length -1) && (
+                {!errorsVariation[index] && index === variations.length - 1 && (
                   <>
-                    <IconButton color="success" onClick={handleAddVariation}  component="span">
+                    <IconButton
+                      color="success"
+                      onClick={handleAddVariation}
+                      component="span"
+                    >
                       <AddIcon />
                     </IconButton>
-                    {variations.length > 1 && (
-                      <IconButton color="error" onClick={removeVariation} component="span">
-                        <RemoveIcon />
-                      </IconButton>
-                    )}
                   </>
+                )}
+                {variations.length > 1 && index === variations.length - 1 && (
+                  <IconButton
+                    color="error"
+                    onClick={removeVariation}
+                    component="span"
+                  >
+                    <RemoveIcon />
+                  </IconButton>
                 )}
               </Grid>
             </Grid>
