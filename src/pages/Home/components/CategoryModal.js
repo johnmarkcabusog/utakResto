@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { openCategoryModal } from "../../../redux/actions/productActions";
+import { openCategoryModal, openInfoAlert } from "../../../redux/actions/productActions";
 import { addCategory } from "../utils";
 
 const style = {
@@ -31,7 +31,7 @@ const CategoryModal = ({ db, categories }) => {
 
   const handleSubmit = async () => {
     await addCategory(db,category);
-    alert("Category Added");
+    dispatch(openInfoAlert({ open: true, state: "success", message: "New Category Added!" }));
     handleClose();
   };
 

@@ -36,7 +36,7 @@ export const addCategory = async(db, category_name)=>{
   const categoryRef = ref(db, "categories");
   const newCategory = push(categoryRef);
   const newCategoryRef = ref(db, "categories/" + newCategory.key);
-  await set(newCategoryRef, { label: category_name, id: newCategory.key})
+  await set(newCategoryRef, { label: category_name, value: newCategory.key})
 }
 
 export const variationData = (variation) => {
@@ -80,7 +80,6 @@ export const addNewItem = async ({ values, db }) => {
       }
       const menuItemRef = ref(db, "menu/" + newMenuItem.key);
       await set(menuItemRef, {...menuData(values), variations: variationIds});
-      alert("YES")
     }
   }catch(err){
     console.log("errr",err)
@@ -88,6 +87,20 @@ export const addNewItem = async ({ values, db }) => {
   }
 
 };
+
+export const deleteItem = async ({ db, id }) => {
+  const dbRef = ref(db);
+  const menuItemRef = ref(db, "menu/" + id);
+  const menuItem = await getFirebase(child(dbRef, "menu/" + id)); 
+    if (menuItem.exists()) {
+      const data = menuItem.val();
+      const db_variations = get(data, "variations", []);
+      if (data.has_variation) {
+        await removeAllVariations(db_variations,db);
+      }
+    }
+  await remove(menuItemRef);
+}
 
 const removeAllVariations = async (db_variations, db)=>{
   if (db_variations.length > 0) {
@@ -146,9 +159,8 @@ export const updateItem = async ({ values, db }) => {
         });
       }
     }
-    alert("YES")
   } catch (err) {
     console.log("err", err)
-    alert("SOMETHING WENT WRONG",err);
+    alert("Something went wrong")
   }
 };

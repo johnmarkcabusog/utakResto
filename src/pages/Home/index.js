@@ -11,15 +11,18 @@ import { ref, onValue, off} from "firebase/database"
 import CollapsibleTable from "./components/CollapseMenuTable";
 import DrawerForm from "./components/DrawerForm";
 import CategoryModal from "./components/CategoryModal";
+import DeleteModal from "./components/DeleteModal";
+import InfoAlert from "./components/InfoAlert";
 
 const Home = () => {
   const [db, setDb] = useState('');
   const [categories, setCategories] = useState([]);
   const openDrawer = useSelector((state) => state.appState.openAddMenuDrawer.open);
   const openModal = useSelector((state) => state.appState.openCategoryModal.open);
-
+  const openDeleteModal = useSelector( (state) => state.appState.openDeleteModal.open);
+  const openAlert = useSelector( (state) => state.appState.openInfoAlert.open);
   const dispatch = useDispatch();
-  
+  console.log("openAlert", openAlert)
   useEffect(()=>{ // no dependency to run only once
     const db = StartFirebase()
     setDb(db);
@@ -86,6 +89,9 @@ const Home = () => {
       </div>
       {openDrawer && (<DrawerForm db={db} categories={categories}/>)}
       {openModal && (<CategoryModal db={db} categories={categories}/>)}
+      {openDeleteModal && (<DeleteModal db={db} />)}
+      {openAlert && (<InfoAlert/>)}
+
     </div>
   );
 };

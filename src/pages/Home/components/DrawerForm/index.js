@@ -6,7 +6,7 @@ import validationSchema from "../../validationSchema";
 import { Drawer } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { openAddMenuDrawer } from "../../../../redux/actions/productActions";
+import { openAddMenuDrawer, openInfoAlert } from "../../../../redux/actions/productActions";
 import { addNewItem, updateItem } from "../../utils";
 
 const DrawerForm = ({ db, categories }) => {
@@ -28,10 +28,14 @@ const DrawerForm = ({ db, categories }) => {
 
   const handleSubmit = async (values) => {
     if (drawerAction === "add") {
-      addNewItem({ values, db });
+      await addNewItem({ values, db });
+      dispatch(openInfoAlert({ open: true, state: "success", message: "Item Successfully Added" }));
+      handleCloseDrawer()
     } else {
       // update
-      updateItem({ values, db });
+      await updateItem({ values, db });
+      dispatch(openInfoAlert({ open: true, state: "success", message: "Item Successfully Updated" }));
+      handleCloseDrawer()
     }
   };
 

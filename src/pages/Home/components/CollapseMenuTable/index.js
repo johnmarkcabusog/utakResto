@@ -71,6 +71,7 @@ const CollapsibleTable = ({ db, categories }) => {
               <StyledTableCell align="right">Price&nbsp;(Php)</StyledTableCell>
               <StyledTableCell align="right">Cost&nbsp;(Php)</StyledTableCell>
               <StyledTableCell align="right">Stock</StyledTableCell>
+              <StyledTableCell align="right"></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

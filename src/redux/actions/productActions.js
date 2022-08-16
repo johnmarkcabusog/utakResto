@@ -13,3 +13,24 @@ export const openCategoryModal = (payload)=>{
         payload: payload,
     }
 }
+
+export const openDeleteModal = (payload)=>{
+    return {
+        type: ActionTypes.OPEN_DELETE_MODAL,
+        payload: payload,
+    }
+}
+
+export const openSnackBar = (payload)=>{
+    return {
+        type: ActionTypes.OPEN_DELETE_MODAL,
+        payload: payload,
+    }
+}
+
+export const openInfoAlert = (payload)=>{
+    return {
+        type: ActionTypes.OPEN_INFO_ALERT,
+        payload: payload,
+    }
+}

@@ -23,7 +23,6 @@ const MenuForm = (props) => {
   if(isEmpty(values)){
     return null;
   }
-
   return (
     <Fragment>
             <div className="form-header">
@@ -48,8 +47,8 @@ const MenuForm = (props) => {
                 fullWidth={true}
                 select
               >
-                {categories.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
+                {categories.map((option, index) => (
+                  <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 ))}
