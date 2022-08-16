@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from "react";
 import "./style.css";
 import UtakLogo from "../../assets/utak-logo.svg";
-import AddIcon from "@mui/icons-material/Add";
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Container } from "@mui/system";
-import { useDispatch, useSelector } from "react-redux";
-import { openAddMenuDrawer } from "../../redux/actions/productActions";
+import { useSelector } from "react-redux";
 import StartFirebase from "../../firebaseConfig";
 import { ref, onValue, off} from "firebase/database"
 import CollapsibleTable from "./components/CollapseMenuTable";
@@ -13,6 +11,7 @@ import DrawerForm from "./components/DrawerForm";
 import CategoryModal from "./components/CategoryModal";
 import DeleteModal from "./components/DeleteModal";
 import InfoAlert from "./components/InfoAlert";
+import AddItemButton from "./components/AddItemButton";
 
 const Home = () => {
   const [db, setDb] = useState('');
@@ -21,8 +20,7 @@ const Home = () => {
   const openModal = useSelector((state) => state.appState.openCategoryModal.open);
   const openDeleteModal = useSelector( (state) => state.appState.openDeleteModal.open);
   const openAlert = useSelector( (state) => state.appState.openInfoAlert.open);
-  const dispatch = useDispatch();
-  console.log("openAlert", openAlert)
+  
   useEffect(()=>{ // no dependency to run only once
     const db = StartFirebase()
     setDb(db);
@@ -61,23 +59,8 @@ const Home = () => {
         <div className="company-name">UTAK RESTAURANT</div>
       </div>
       <div>
-        <Container>
-          <Button
-            style={{
-              marginBottom: 20,
-              backgroundColor: "#62bbc2",
-              fontWeight: "bold",
-              float: "right",
-            }}
-            variant="contained"
-            onClick={() => {
-              dispatch(
-                openAddMenuDrawer({ open: true, action: "add", id: 0 })
-              );
-            }}
-          >
-            Add Item &nbsp; <AddIcon />
-          </Button>
+        <Container maxWidth="xl">
+          <AddItemButton/>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <div className="menu-table">

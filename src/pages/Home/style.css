@@ -7,7 +7,6 @@
     background-color: whitesmoke;
     display:  flex;
     gap: 50px;
-    /* padding: 40px; */
     justify-content: center;
     align-items: center;
 }
@@ -72,4 +71,17 @@
     align-items: center;
     justify-content: center;
     gap:10px;
+}
+
+.category-button{
+    position: relative;
+    padding-top:15px;
+    padding-right:15px;
+}
+.category-button-remove{
+    position: absolute !important;
+    right:0;
+    /* display: inline-block; */
+    top:0;
+    background-color: red;
 }

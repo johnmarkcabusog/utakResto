@@ -5,8 +5,13 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { openCategoryModal, openInfoAlert } from "../../../redux/actions/productActions";
+import {
+  openCategoryModal,
+  openInfoAlert,
+} from "../../../redux/actions/productActions";
 import { addCategory } from "../utils";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
   position: "absolute",
@@ -23,15 +28,23 @@ const style = {
 const CategoryModal = ({ db, categories }) => {
   const [category, setCategory] = useState("");
   const dispatch = useDispatch();
-  const openModal = useSelector( (state) => state.appState.openCategoryModal.open);
+  const openModal = useSelector(
+    (state) => state.appState.openCategoryModal.open
+  );
   const isValid = category.trim() !== "";
-  const handleClose = ()=>{
-    dispatch(openCategoryModal({open:false}))
-  }
+  const handleClose = () => {
+    dispatch(openCategoryModal({ open: false }));
+  };
 
   const handleSubmit = async () => {
-    await addCategory(db,category);
-    dispatch(openInfoAlert({ open: true, state: "success", message: "New Category Added!" }));
+    await addCategory(db, category);
+    dispatch(
+      openInfoAlert({
+        open: true,
+        state: "success",
+        message: "New Category Added!",
+      })
+    );
     handleClose();
   };
 
@@ -47,6 +60,14 @@ const CategoryModal = ({ db, categories }) => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Add Category
           </Typography>
+          <IconButton
+            color="error"
+            className="category-button-remove"
+            size="small"
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
           <TextField
             id="new_category"
             name="new_category"

@@ -17,3 +17,5 @@ export const formInitialValues = {
     cost:0,
     stock:0
 }
+
+export const CATEGORY_LIMIT = 10;

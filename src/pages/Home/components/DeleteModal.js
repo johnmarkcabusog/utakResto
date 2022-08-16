@@ -8,7 +8,7 @@ import {
   openDeleteModal,
   openInfoAlert,
 } from "../../../redux/actions/productActions";
-import { deleteItem } from "../utils";
+import { deleteItem, deleteCategory } from "../utils";
 
 const style = {
   position: "absolute",
@@ -26,16 +26,20 @@ const DeleteModal = ({ db }) => {
   const dispatch = useDispatch();
   const openModal = useSelector((state) => state.appState.openDeleteModal.open);
   const id = useSelector((state) => state.appState.openDeleteModal.id);
+  const entity = useSelector((state) => state.appState.openDeleteModal.entity);
+
   const toDelete = useSelector(
     (state) => state.appState.openDeleteModal.toDelete
   );
-
-  console.log("openMOdal", openModal, id);
 
   const handleSubmit = async () => {
     if (toDelete === "menu") {
       await deleteItem({ db, id });
     }
+    if (toDelete === "category") {
+      await deleteCategory({ db, id });
+    }
+
     dispatch(
       openInfoAlert({
         open: true,
@@ -46,7 +50,9 @@ const DeleteModal = ({ db }) => {
     handleClose();
   };
   const handleClose = () => {
-    dispatch(openDeleteModal({ open: false, toDelete }));
+    dispatch(
+      openDeleteModal({ open: false, id: 0, toDelete: "menu", entity: "" })
+    );
   };
 
   return (
@@ -58,9 +64,9 @@ const DeleteModal = ({ db }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure you want to delete this{" "}
-            {toDelete === "menu" ? "item" : toDelete} ?
+          <Typography id="modal-modal-title">
+            Are you sure you want to delete&nbsp;
+            <span style={{fontWeight:"bold"}}>{toDelete === "menu" ? `${entity}` : `${entity}(${toDelete})`} ?</span>
           </Typography>
           <div className="button-modal">
             <Button

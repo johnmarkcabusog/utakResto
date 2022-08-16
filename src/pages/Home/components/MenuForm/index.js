@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
+import { useDispatch } from "react-redux";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Switch from "@mui/material/Switch";
@@ -9,10 +10,11 @@ import VariationOptions from "./VariationOptions";
 import { isEmpty  } from "lodash";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from "@mui/material/IconButton";
+import { openCategoryModal } from "../../../../redux/actions/productActions";
 
 const MenuForm = (props) => {
   const { values, errors, handleChange, touched, handleBlur, handleReset, setFieldValue, dirty, handleCloseDrawer, handleSubmit, categories, drawerAction} = props;
-
+  const dispatch = useDispatch();
   const helpText = (field_name) => {
     return touched[field_name] ? errors[field_name] : "";
   };
@@ -47,6 +49,9 @@ const MenuForm = (props) => {
                 fullWidth={true}
                 select
               >
+                <MenuItem key={`add-category`} style={{color:"green"}} onClick={()=>dispatch(openCategoryModal({ open: true }))}>
+                  Add New Category...
+                </MenuItem>
                 {categories.map((option, index) => (
                   <MenuItem key={index} value={option.value}>
                     {option.label}

@@ -15,6 +15,8 @@ import TableCell from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import { openAddMenuDrawer, openDeleteModal } from "../../../../../redux/actions/productActions";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { get } from "lodash";
+import Link  from "@mui/material/Link";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -30,10 +32,29 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const total = (variations, fieldToSum)=>{
+  const all = variations.map(x=> {
+    const val = get(x,fieldToSum, 0);
+    return val;
+  })
+  
+  return all.length > 0 ? all.reduce((total, num)=> total + num):0;
+}
+
 const Row = (props) => {
   const { row, categories } = props;
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
+
+  const VariationList = ()=>{
+    const names = row.variations.map(x=> x.variation_name);
+    return(
+      <Link onClick={(e)=>{
+        e.stopPropagation();
+        setOpen(!open);
+      }}>{names.join(", ")}</Link>
+    )
+  }
   return (
     <React.Fragment>
       <StyledTableRow
@@ -56,7 +77,6 @@ const Row = (props) => {
               size="small"
               color="primary"
               onClick={(e) => {
-                e.preventDefault();
                 e.stopPropagation();
                 setOpen(!open);
               }}
@@ -71,15 +91,14 @@ const Row = (props) => {
         <TableCell align="right">
           {getCategory(categories, row.menu_category)}
         </TableCell>
-        <TableCell align="right">{row.has_variation ? "===" : "---"}</TableCell>
-        <TableCell align="right">{row.price}</TableCell>
-        <TableCell align="right">{row.cost}</TableCell>
-        <TableCell align="right">{row.stock}</TableCell>
+        <TableCell align="right">{row.has_variation ? <VariationList/>: "---"}</TableCell>
+        <TableCell align="right">{row.has_variation  ? `${total(row.variations, "variation_price")} (Total)`:row.price}</TableCell>
+        <TableCell align="right">{row.has_variation  ? `${total(row.variations, "variation_cost")} (Total)`:row.cost}</TableCell>
+        <TableCell align="right">{row.has_variation  ? `${total(row.variations, "variation_stock")} (Total)`:row.stock}</TableCell>
         <TableCell align="right">
         <IconButton aria-label="expand row" color="error" size="small" onClick={(e)=>{
           e.stopPropagation();
-          console.log("deelte", row.id)
-          dispatch(openDeleteModal({open:true, toDelete:"menu", id: row.id}))
+          dispatch(openDeleteModal({open:true, toDelete:"menu", id: row.id, entity:row.menu_name }))
         }} >
           <HighlightOffIcon />
         </IconButton>

@@ -14,6 +14,7 @@ const initialState = {
     open: false,
     id: 0,
     toDelete: "menu",
+    entity:""
   },
   openInfoAlert: {
     open: false,

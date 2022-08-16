@@ -8,19 +8,18 @@ import {
 } from "firebase/database";
 import { get } from "lodash";
 
-export const getVariations = (menu, db) => {
+export const getVariations = async (menu, db) => {
   const variationList = [];
   if (menu.has_variation) {
     const variations = get(menu, "variations", []);
     if (variations.length > 0) {
       const dbRef = ref(db);
-      variations.forEach((v) => {
-        getFirebase(child(dbRef, "variations/" + v)).then((snapshot) => {
-          if (snapshot.exists()) {
-            variationList.push({ id: v, ...snapshot.val() });
-          }
-        });
-      });
+      for(let vary of variations){
+        const data =  await getFirebase(child(dbRef, "variations/" + vary));
+        if(data.exists()){
+          variationList.push({ id: vary, ...data.val() })
+        }
+      }
     }
   }
   return variationList;
@@ -31,13 +30,12 @@ export const getCategory = (categories, category_id) => {
   return !found ? "Unknown" : found.label;
 };
 
-
-export const addCategory = async(db, category_name)=>{
+export const addCategory = async (db, category_name) => {
   const categoryRef = ref(db, "categories");
   const newCategory = push(categoryRef);
   const newCategoryRef = ref(db, "categories/" + newCategory.key);
-  await set(newCategoryRef, { label: category_name, value: newCategory.key})
-}
+  await set(newCategoryRef, { label: category_name, value: newCategory.key });
+};
 
 export const variationData = (variation) => {
   return {
@@ -48,27 +46,27 @@ export const variationData = (variation) => {
   };
 };
 
-export const menuData = (values) =>{
+export const menuData = (values) => {
   return {
     menu_name: values.menu_name,
-    has_variation:values.has_variation,
+    has_variation: values.has_variation,
     menu_category: values.menu_category,
     price: values.price,
     stock: values.stock,
     cost: values.cost,
-  }
-}
+  };
+};
 
 export const addNewItem = async ({ values, db }) => {
   const { has_variation, variations } = values;
   const menuCollectionRef = ref(db, "menu");
-  try{
+  try {
     if (!has_variation) {
       const newMenuItem = push(menuCollectionRef);
       const menuItemRef = ref(db, "menu/" + newMenuItem.key);
-      await set(menuItemRef, { ...values, variations: [] })
+      await set(menuItemRef, { ...values, variations: [] });
     } else {
-       // ==> add new variations
+      // ==> add new variations
       const newMenuItem = push(menuCollectionRef);
       const variationCollectionRef = ref(db, "variations");
       const variationIds = [];
@@ -79,37 +77,44 @@ export const addNewItem = async ({ values, db }) => {
         set(variationItemRef, variationData(vData));
       }
       const menuItemRef = ref(db, "menu/" + newMenuItem.key);
-      await set(menuItemRef, {...menuData(values), variations: variationIds});
+      await set(menuItemRef, { ...menuData(values), variations: variationIds });
     }
-  }catch(err){
-    console.log("errr",err)
-    alert("Something went wrong")
+  } catch (err) {
+    alert("Something went wrong");
   }
-
 };
 
 export const deleteItem = async ({ db, id }) => {
   const dbRef = ref(db);
   const menuItemRef = ref(db, "menu/" + id);
-  const menuItem = await getFirebase(child(dbRef, "menu/" + id)); 
-    if (menuItem.exists()) {
-      const data = menuItem.val();
-      const db_variations = get(data, "variations", []);
-      if (data.has_variation) {
-        await removeAllVariations(db_variations,db);
-      }
+  const menuItem = await getFirebase(child(dbRef, "menu/" + id));
+  if (menuItem.exists()) {
+    const data = menuItem.val();
+    const db_variations = get(data, "variations", []);
+    if (data.has_variation) {
+      await removeAllVariations(db_variations, db);
     }
+  }
   await remove(menuItemRef);
-}
+};
 
-const removeAllVariations = async (db_variations, db)=>{
+export const deleteCategory = async ({ db, id }) => {
+  try {
+    const categoryRef = ref(db, "categories/" + id);
+    await remove(categoryRef);
+  } catch (err) {
+    console.log("err", err, id);
+  }
+};
+
+const removeAllVariations = async (db_variations, db) => {
   if (db_variations.length > 0) {
     for (let db_v of db_variations) {
       const variationItemRef = ref(db, "variations/" + db_v);
       await remove(variationItemRef);
     }
   }
-}
+};
 
 export const updateItem = async ({ values, db }) => {
   const {
@@ -125,7 +130,7 @@ export const updateItem = async ({ values, db }) => {
   const dbRef = ref(db);
 
   try {
-    const menuItem = await getFirebase(child(dbRef, "menu/" + id)); 
+    const menuItem = await getFirebase(child(dbRef, "menu/" + id));
     if (menuItem.exists()) {
       const data = menuItem.val();
       const db_variations = get(data, "variations", []);
@@ -141,10 +146,10 @@ export const updateItem = async ({ values, db }) => {
           stock,
           variations: [],
         });
-        await removeAllVariations(db_variations,db);
+        await removeAllVariations(db_variations, db);
       } else {
         //===> remove all existing variations to avoid unseen use cases, needs improvement
-        await removeAllVariations(db_variations,db);
+        await removeAllVariations(db_variations, db);
         // ==> add new variations
         const variationCollectionRef = ref(db, "variations");
         const variationIds = [];
@@ -155,12 +160,11 @@ export const updateItem = async ({ values, db }) => {
           set(variationItemRef, variationData(vData));
         }
         const menuItemRef = ref(db, "menu/" + id);
-        set(menuItemRef, {...menuData(values), variations: variationIds,
-        });
+        set(menuItemRef, { ...menuData(values), variations: variationIds });
       }
     }
   } catch (err) {
-    console.log("err", err)
-    alert("Something went wrong")
+    console.log("err", err);
+    alert("Something went wrong");
   }
 };
