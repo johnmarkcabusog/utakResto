@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, createContext} from "react";
 import { useSelector } from "react-redux";
 import "./style.css";
 import UtakLogo from "../../assets/utak-logo.svg";
@@ -12,6 +12,8 @@ import DeleteModal from "./components/DeleteModal";
 import InfoAlert from "./components/InfoAlert";
 import AddItemButton from "./components/AddItemButton";
 import { ref, onValue, off} from "firebase/database"
+
+export let CategoriesContext = createContext('');
 
 const Home = () => {
   const [db, setDb] = useState('');
@@ -58,16 +60,18 @@ const Home = () => {
         <div className="company-name">UTAK RESTAURANT</div>
       </div>
       <div>
-        <Container maxWidth="xl">
-          <AddItemButton/>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <div className="menu-table">
-                <CollapsibleTable  db={db}  categories={categories}/>
-              </div>
+        <CategoriesContext.Provider value={categories}>
+          <Container maxWidth="xl">
+            <AddItemButton/>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <div className="menu-table">
+                  <CollapsibleTable  db={db}  categories={categories}/>
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        </CategoriesContext.Provider>
       </div>
       {openDrawer && (<DrawerForm db={db} categories={categories}/>)}
       {openModal && (<CategoryModal db={db} categories={categories}/>)}

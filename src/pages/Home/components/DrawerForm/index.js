@@ -19,7 +19,6 @@ const DrawerForm = ({ db, categories }) => {
   const menuData = useSelector(
     (state) => state.appState.openAddMenuDrawer.data
   );
-
   const dispatch = useDispatch();
 
   const handleCloseDrawer = () => {

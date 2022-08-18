@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
@@ -20,6 +20,7 @@ import {
 } from "../../../../../redux/actions/productActions";
 import { get } from "lodash";
 import Link from "@mui/material/Link";
+import { CategoriesContext } from "../../..";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -45,9 +46,10 @@ const total = (variations, fieldToSum) => {
 };
 
 const Row = (props) => {
-  const { row, categories } = props;
+  const { row } = props;
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
+  const categories = useContext(CategoriesContext);
 
   const VariationList = () => {
     const names = row.variations.map((x) => x.variation_name);

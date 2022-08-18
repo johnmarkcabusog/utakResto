@@ -14,9 +14,7 @@ const InfoAlert = ()=> {
   const openSnackbar = useSelector(
     (state) => state.appState.openInfoAlert.open
   );
-//   const state = useSelector((state) => state.appState.openInfoAlert.state);
   const message = useSelector((state) => state.appState.openInfoAlert.message);
-    console.log("infoo", openSnackbar)
   const handleClose = () => {
     dispatch(
       openInfoAlert({

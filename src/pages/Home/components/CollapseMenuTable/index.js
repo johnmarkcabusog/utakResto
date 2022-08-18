@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
@@ -24,7 +24,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const CollapsibleTable = ({ db, categories }) => {
+const CollapsibleTable = ({ db }) => {
   const [filterCategory, setFilterCategory] = useState("All");
   const [menuItems, setMenuItems] = useState([]);
   
@@ -58,7 +58,6 @@ const CollapsibleTable = ({ db, categories }) => {
   return (
     <>
       <Filters
-        categories={categories}
         setFilterCategory={setFilterCategory}
         filterCategory={filterCategory}
         menuItems={menuItems}
@@ -79,7 +78,7 @@ const CollapsibleTable = ({ db, categories }) => {
           </TableHead>
           <TableBody>
             {filteredItems.map((row) => (
-              <Row key={row.name} row={row} categories={categories} />
+              <Row key={row.name} row={row} />
             ))}
           </TableBody>
         </Table>

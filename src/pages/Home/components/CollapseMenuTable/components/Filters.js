@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -9,14 +9,15 @@ import {
   openDeleteModal,
 } from "../../../../../redux/actions/productActions";
 import { CATEGORY_LIMIT } from "../../../constants";
+import { CategoriesContext } from "../../..";
 
 const Filters = ({
-  categories,
   menuItems,
   filterCategory,
   setFilterCategory,
 }) => {
   const dispatch = useDispatch();
+  const categories = useContext(CategoriesContext);
   const [buttonHovered, setButtonHoverd] = useState({
     hovered: false,
     category_value: "",
