@@ -11,9 +11,10 @@ import { isEmpty  } from "lodash";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from "@mui/material/IconButton";
 import { openCategoryModal } from "../../../../redux/actions/productActions";
+import { CircularProgress } from "@mui/material";
 
 const MenuForm = (props) => {
-  const { values, errors, handleChange, touched, handleBlur, handleReset, setFieldValue, dirty, handleCloseDrawer, handleSubmit, categories, drawerAction} = props;
+  const { values, errors, handleChange, touched, handleBlur, handleReset, setFieldValue, dirty, handleCloseDrawer, handleSubmit, isSubmitting, categories, drawerAction} = props;
   const dispatch = useDispatch();
   const helpText = (field_name) => {
     return touched[field_name] ? errors[field_name] : "";
@@ -134,7 +135,7 @@ const MenuForm = (props) => {
 
               <div className="submit-section">
                 <Button variant="outlined" disabled={!dirty} onClick={handleReset}>Reset</Button>{" "}
-                <Button variant="contained" disabled={!dirty || !isEmpty(errors)} onClick={handleSubmit}>{drawerAction==="add"? 'Submit':'Update'}</Button>
+                <Button variant="contained" disabled={!dirty || !isEmpty(errors) || isSubmitting} onClick={handleSubmit}>{drawerAction==="add"? 'Submit':'Update'} {isSubmitting && (<CircularProgress size="1rem"/>)} </Button>
               </div>
             </div>
     </Fragment>
